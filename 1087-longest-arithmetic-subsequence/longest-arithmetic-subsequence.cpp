@@ -2,28 +2,18 @@ class Solution {
 public:
     int longestArithSeqLength(vector<int>& nums) {
         int n = nums.size();
-        int las = 1;
+        vector<unordered_map<int,int>> v(n); 
+        int res = 2;
 
-        int maxi = *max_element(nums.begin() , nums.end());
-        int mini = *min_element(nums.begin() , nums.end());
-        
-        for(int i=(mini - maxi);i<=(maxi - mini);i++){
-            int res = 1;
-            int difference = i;
-            unordered_map<int,int> mp;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<i;j++){
+                int diff = nums[i] - nums[j];
 
-            for(int i=0;i<n;i++){
-                int ans = 1;
+                res = max(res , 1 + v[j][diff]);
 
-                ans = 1 + mp[nums[i] - difference];  
-                res = max(res , ans);  
-                
-                mp[nums[i]] = ans;
+                v[i][diff] = max(2 , 1+v[j][diff]);
             }
-
-            las = max(las , res);
-        }
-
-        return las;
+        }    
+        return res;
     }
 };
