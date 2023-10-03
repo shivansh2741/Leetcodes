@@ -28,58 +28,50 @@ public:
     int get(int key) {
         if(mp.find(key) == mp.end())return -1;
 
-        addToStart(key);
-        return mp[key]->value;
+        int ans = mp[key]->value;
+        deleteNode(key);
+        addToStart(key , ans);
+
+        return ans;
     }
     
     void put(int key, int value) {
         if(mp.find(key) != mp.end()){
             Node* node = mp[key];
-            node->value = value;
-            addToStart(key);
+            deleteNode(key);
+            mp.erase(key);
         }    
-        else{
 
-            if(mp.size() == cap){
-                Node* last = tail->prev;
-
-                mp.erase(last->key);
-                last->key = key;
-                last->value = value;
-                mp[key] = last;
-                addToStart(key);
-            }
-            else{
-                Node* newNode = new Node(key , value);
-
-                Node* tempnext = head->next;
-                head->next = newNode;
-                newNode->prev = head;
-                newNode->next = tempnext;
-                tempnext->prev = newNode;
-
-                mp[key] = newNode;
-            }
+        if(mp.size() == cap){
+            Node* last = tail->prev;
+            deleteNode(last->key);
         }
+
+        addToStart(key , value);
     }
 
-    void addToStart(int key){
+    void deleteNode(int key){
         Node* node = mp[key];
 
-        Node* tempprev = node->prev;
         Node* tempnext = node->next;
+        Node* tempprev = node->prev;
 
-        node->next = NULL;
-        node->prev = NULL;
-
-        tempprev->next = tempnext;
         tempnext->prev = tempprev;
+        tempprev->next = tempnext;
+
+        mp.erase(key);
+        delete(node);
+    }
+    void addToStart(int key , int value){
+        Node* node = new Node(key , value);
 
         Node* nextHead = head->next;
         head->next = node;
         node->prev = head;
         node->next = nextHead;
         nextHead->prev = node;
+
+        mp[key] = node;
     }
 };
 
