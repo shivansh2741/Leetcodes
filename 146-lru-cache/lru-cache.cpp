@@ -1,4 +1,5 @@
-struct Node{
+class Node{
+    public:
     int value;
     int key;
 
