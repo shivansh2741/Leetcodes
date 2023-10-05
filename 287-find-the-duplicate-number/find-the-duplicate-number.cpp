@@ -5,12 +5,18 @@ public:
 
         int i = 0;
         while(i < n){
-            int correct = nums[i]-1;
-            if(nums[i] != nums[correct])
+            int correct = nums[i] - 1;
+
+            if(nums[i] != nums[correct]){
                 swap(nums[i] , nums[correct]);
+            }
             else i++;
         }
-        
-        return  nums[n-1];     
+
+        for(int i=0;i<n;i++){
+            if(nums[i] != i+1)
+                return nums[i];
+        }    
+        return -1;
     }
 };
