@@ -1,8 +1,8 @@
 # Write your MySQL query statement below
 with t1 as(
   select *,
-  lag(student) over(order by id) as prev_student,
-  lead(student) over(order by id) as next_student
+  lag(student) over() as prev_student,
+  lead(student) over() as next_student
   from Seat
 )
 
