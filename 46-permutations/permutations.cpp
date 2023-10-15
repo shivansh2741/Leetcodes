@@ -1,28 +1,26 @@
 class Solution {
 public:
-    void solve(vector<int>& nums,int n,vector<int>& temp,vector<vector<int>>& res,int bitmask){
+    void solve(vector<int>& nums,int n,vector<vector<int>>& res,int i){
 
-        if(bitmask == (1 << n) - 1){
-            res.push_back(temp);
+        if(i == n){
+            res.push_back(nums);
             return;
         }
 
-        for(int i=0;i<n;i++){
-            if((bitmask & (1 << i)) == 0){
-                int newmask = bitmask | (1 << i);
-                temp.push_back(nums[i]);
-                solve(nums,n,temp,res,newmask);
-                temp.pop_back();
-            }
+
+        // for ith index
+        for(int j=i;j<n;j++){
+            swap(nums[i] , nums[j]);
+            solve(nums,n,res,i+1);
+            swap(nums[i] , nums[j]);
         }
     }
     vector<vector<int>> permute(vector<int>& nums) {
         int n = nums.size();
 
-        vector<int> temp;
         vector<vector<int>> res;
 
-        solve(nums,n,temp,res,0);
+        solve(nums,n,res,0);
 
         return res;    
     }
