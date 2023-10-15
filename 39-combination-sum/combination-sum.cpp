@@ -2,14 +2,12 @@ class Solution {
 public:
     void solve(vector<int>& candidates,int target,int index,int n,vector<int>& ans,vector<vector<int>>& res){
         
-        if(target < 0)return;
-        if(index == n){
-            if(target == 0){
-                res.push_back(ans);
-            }
+        if(target == 0){
+            res.push_back(ans);
             return;
         }
-        
+        if(index == n || target < 0)return;
+
         //pick
         ans.push_back(candidates[index]);
         solve(candidates,target-candidates[index],index,n,ans,res);
