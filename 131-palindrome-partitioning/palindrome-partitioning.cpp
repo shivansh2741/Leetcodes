@@ -1,37 +1,40 @@
 class Solution {
 public:
-    bool isPalindrome(string s1){
-        string s2 = s1;
-        reverse(s2.begin() , s2.end());
+    int dp[17][17];
 
-        return (s1 == s2);
+    bool isPalindrome(string &str , int i , int j){
+        if(j <= i)return true;    
+
+        if(dp[i][j] != -1)return dp[i][j];
+
+        if(str[i] != str[j])
+            return dp[i][j] = false;
+        else return dp[i][j] = isPalindrome(str,i+1,j-1);
     }
-    void solve(string s,int index,int n,vector<string>& ans,
-    vector<vector<string>> &res){
-        
-        if(index == n){
-            res.push_back(ans);
+
+    void solve(string& s,int index,vector<string>& partialans,           vector<vector<string>>& ans){
+
+        if(index == s.size()){
+            ans.push_back(partialans);
             return;
         }
 
-        string temp;
-        for(int i = index;i<n;i++){
-            temp.push_back(s[i]);
-
-            if(isPalindrome(temp)){
-                ans.push_back(temp);
-                solve(s,i+1,n,ans,res);
-                ans.pop_back();
+        for(int i=index;i<s.size();i++){
+            if(isPalindrome(s , index , i)){
+                partialans.push_back(s.substr(index,i-index+1));
+                solve(s,i+1,partialans,ans);
+                partialans.pop_back();
             }
         }
     }
     vector<vector<string>> partition(string s) {
-        int n = s.size();
-        vector<string> ans;
-        vector<vector<string>> res;
+        vector<vector<string>> ans;
+        vector<string> partialans;
 
-        solve(s,0,n,ans,res);
+        memset(dp,-1,sizeof(dp));
 
-        return res;        
+        solve(s,0,partialans,ans);
+
+        return ans;
     }
 };
