@@ -2,27 +2,19 @@ class Solution {
 public:
     int maximumElementAfterDecrementingAndRearranging(vector<int>& arr) {
         int n = arr.size();
-        map<int,int>mp;    
+        
+        sort(arr.begin() , arr.end());
+        arr[0] = 1;
 
-        for(auto it:arr){
-            mp[it]++;
-        }
-
-        int curr = 1;
-        while(mp.size() > 0){
-            if(mp.find(curr) != mp.end()){
-                mp.erase(curr);
-                curr++;
+        int i = 1;
+        while(i < n){
+            while(arr[i] == arr[i-1] + 1){
+                i++;
             }
-            else{
-                auto it = mp.begin();
-                mp[it->first]--;
-                curr++;
-
-                if(mp[it->first] == 0)
-                    mp.erase(it->first);
-            }
+            if(arr[i] > arr[i-1])
+                arr[i] = arr[i-1]+1;
+            i++;
         }
-        return curr-1;
+        return arr[n-1];
     }
 };
